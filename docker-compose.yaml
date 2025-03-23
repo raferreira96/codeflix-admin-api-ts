@@ -1,0 +1,11 @@
+name: codeflix-admin-api
+
+services:
+  app:
+    build: .
+    container_name: app
+    command: ./.docker/start.sh
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/home/node/app
