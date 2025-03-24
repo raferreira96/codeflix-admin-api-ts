@@ -15,8 +15,15 @@
     "@swc/core": "^1.11.12",
     "@swc/jest": "^0.2.37",
     "@types/jest": "^29.5.14",
+    "@types/lodash": "^4.17.16",
+    "@types/uuid": "^10.0.0",
+    "class-validator": "^0.14.1",
     "jest": "^29.7.0",
+    "lodash": "^4.17.21",
     "ts-node": "^10.9.2",
     "typescript": "^5.8.2"
+  },
+  "dependencies": {
+    "uuid": "^11.1.0"
   }
 }
