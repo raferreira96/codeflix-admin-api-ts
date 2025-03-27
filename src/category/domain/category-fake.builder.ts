@@ -6,7 +6,7 @@ type PropOrFactory<T> = T | ((index: number) => T);
 
 export class CategoryFakeBuilder<TBuild = any> {
     private _category_id: PropOrFactory<Uuid> | undefined = undefined;
-    private _name: PropOrFactory<string> = (_index) => this.chance.word();
+    private _name: PropOrFactory<string> = (_index) => this.chance.word({ length: 15 });
     private _description: PropOrFactory<string | null> = (_index) => this.chance.paragraph().substring(0, 255);
     private _is_active: PropOrFactory<boolean> = (_index) => true;
     private _created_at: PropOrFactory<Date> | undefined = undefined;
@@ -55,6 +55,11 @@ export class CategoryFakeBuilder<TBuild = any> {
 
     withCreatedAt(valueOrFactory: PropOrFactory<Date>) {
         this._created_at = valueOrFactory;
+        return this;
+    }
+
+    withInvalidNameTooShort(value?: string) {
+        this._name = value ?? this.chance.word({ length: 3 });
         return this;
     }
 
