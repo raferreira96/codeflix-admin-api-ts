@@ -31,5 +31,11 @@
     "sequelize-typescript": "^2.1.6",
     "sqlite3": "^5.1.7",
     "uuid": "^11.1.0"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "@swc/core",
+      "sqlite3"
+    ]
   }
 }
