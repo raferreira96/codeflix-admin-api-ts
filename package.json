@@ -27,6 +27,7 @@
     "typescript": "^5.8.2"
   },
   "dependencies": {
+    "dotenv": "^16.4.7",
     "sequelize": "^6.37.6",
     "sequelize-typescript": "^2.1.6",
     "sqlite3": "^5.1.7",

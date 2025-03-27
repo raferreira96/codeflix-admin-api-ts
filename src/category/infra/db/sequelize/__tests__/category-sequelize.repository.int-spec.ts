@@ -1,25 +1,18 @@
 import {CategorySequelizeRepository} from "../category-sequelize.repository";
-import {Sequelize} from "sequelize-typescript";
 import {CategoryModel} from "../category.model";
 import {Category} from "../../../../domain/category.entity";
 import {Uuid} from "../../../../../shared/domain/value-objects/uuid.vo";
 import {NotFoundError} from "../../../../../shared/domain/errors/not-found.error";
 import {CategoryModelMapper} from "../category-model-mapper";
 import {CategorySearchParams, CategorySearchResult} from "../../../../domain/category.repository";
+import {setupSequelize} from "../../../../../shared/infra/testing/helpers";
 
 describe('CategorySequelizeRepository Integration Tests', () => {
-    let sequelize;
     let repository: CategorySequelizeRepository;
 
-    beforeEach(async () => {
-        sequelize = new Sequelize({
-            dialect: 'sqlite',
-            storage: ':memory:',
-            models: [CategoryModel],
-            logging: false,
-        });
-        await sequelize.sync({ force: true });
+    setupSequelize({ models: [CategoryModel] });
 
+    beforeEach(() => {
         repository = new CategorySequelizeRepository(CategoryModel);
     });
 
