@@ -17,6 +17,7 @@
     "@types/chance": "^1.1.6",
     "@types/jest": "^29.5.14",
     "@types/lodash": "^4.17.16",
+    "@types/sequelize": "^4.28.20",
     "@types/uuid": "^10.0.0",
     "chance": "^1.1.12",
     "class-validator": "^0.14.1",
@@ -26,6 +27,9 @@
     "typescript": "^5.8.2"
   },
   "dependencies": {
+    "sequelize": "^6.37.6",
+    "sequelize-typescript": "^2.1.6",
+    "sqlite3": "^5.1.7",
     "uuid": "^11.1.0"
   }
 }
