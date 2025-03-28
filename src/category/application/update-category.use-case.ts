@@ -35,7 +35,9 @@ export class UpdateCategoryUseCase implements IUseCase<UpdateCategoryInput, Upda
             category.changeDescription(input.description);
         }
 
-        input.is_active ? category.activate() : category.deactivate();
+        if (input.is_active === true) category.activate();
+
+        if (input.is_active === false) category.deactivate();
 
         await this.categoryRepository.update(category);
 
