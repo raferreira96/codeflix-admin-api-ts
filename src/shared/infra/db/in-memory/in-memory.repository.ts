@@ -76,9 +76,9 @@ export abstract class InMemorySearchableRepository<
             return items;
         }
 
-        return [...items].sort((a, b) => {
-            const valueA = custom_getter ? custom_getter(sort, a) : a[sort];
-            const valueB = custom_getter ? custom_getter(sort, b) : b[sort];
+    return [...items].sort((a: E, b: E) => {
+        const valueA = custom_getter ? custom_getter(sort, a) : (a as any)[sort];
+        const valueB = custom_getter ? custom_getter(sort, b) : (b as any)[sort];
 
             if (valueA < valueB) {
                 return sort_dir === 'asc' ? -1 : 1;

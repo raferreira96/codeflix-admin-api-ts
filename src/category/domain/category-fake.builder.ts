@@ -21,7 +21,7 @@ export class CategoryFakeBuilder<TBuild = any> {
         return new CategoryFakeBuilder<Category[]>(countObjs);
     }
 
-    private chance: Chance;
+    private chance;
 
     private constructor(countObjs: number = 1) {
         this.countObjs = countObjs;
@@ -86,7 +86,7 @@ export class CategoryFakeBuilder<TBuild = any> {
                 // category.validate();
                 return category;
             });
-        return this.countObjs === 1 ? (categories[0] as any) : categories;
+        return this.countObjs === 1 ? (categories[0] as any) :  categories as TBuild;
     }
 
     get category_id() {
@@ -112,7 +112,7 @@ export class CategoryFakeBuilder<TBuild = any> {
     private getValue(prop: any) {
         const optional = ['category_id', 'created_at'];
         const privateProp = `_${prop}` as keyof this;
-        if (!this['privateProp'] && optional.includes(prop)) {
+        if (!this[privateProp] && optional.includes(prop)) {
             throw new Error(`Property ${prop} not have a factory, use 'with' methods.`);
         }
         return this.callFactory(this[privateProp], 0);

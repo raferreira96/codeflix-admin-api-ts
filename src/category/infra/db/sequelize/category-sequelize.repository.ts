@@ -1,6 +1,6 @@
 import {CategorySearchParams, CategorySearchResult, ICategoryRepository} from "../../../domain/category.repository";
 import {Category} from "../../../domain/category.entity";
-import {Op, Promise} from "sequelize";
+import {Op} from "sequelize";
 import {Uuid} from "../../../../shared/domain/value-objects/uuid.vo";
 import {CategoryModel} from "./category.model";
 import {NotFoundError} from "../../../../shared/domain/errors/not-found.error";

@@ -100,7 +100,7 @@ describe('ListCategoriesUseCase Unit Tests', () => {
             current_page: 2,
             per_page: 2,
             last_page: 2,
-        } as ListCategoriesInput);
+        });
 
         output = await useCase.execute({
             page: 1,
