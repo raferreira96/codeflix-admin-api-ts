@@ -1,4 +1,4 @@
-import {CreateCategoryUseCase} from "../../create-category.use-case";
+import {CreateCategoryUseCase} from "../create-category.use-case";
 import {CategorySequelizeRepository} from "../../../../infra/db/sequelize/category-sequelize.repository";
 import {setupSequelize} from "../../../../../shared/infra/testing/helpers";
 import {CategoryModel} from "../../../../infra/db/sequelize/category.model";

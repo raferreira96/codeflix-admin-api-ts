@@ -1,9 +1,9 @@
-import {IUseCase} from "../../../shared/application/use-case.interface";
-import {Uuid} from "../../../shared/domain/value-objects/uuid.vo";
-import {ICategoryRepository} from "../../domain/category.repository";
-import {NotFoundError} from "../../../shared/domain/errors/not-found.error";
-import {Category} from "../../domain/category.entity";
-import {CategoryOutput, CategoryOutputMapper} from "./common/category-output";
+import {IUseCase} from "../../../../shared/application/use-case.interface";
+import {Uuid} from "../../../../shared/domain/value-objects/uuid.vo";
+import {ICategoryRepository} from "../../../domain/category.repository";
+import {NotFoundError} from "../../../../shared/domain/errors/not-found.error";
+import {Category} from "../../../domain/category.entity";
+import {CategoryOutput, CategoryOutputMapper} from "../common/category-output";
 
 type GetCategoryInput = {
     id: string;

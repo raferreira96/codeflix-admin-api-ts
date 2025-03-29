@@ -4,7 +4,7 @@ import {CategoryModel} from "../../../../infra/db/sequelize/category.model";
 import {Uuid} from "../../../../../shared/domain/value-objects/uuid.vo";
 import {NotFoundError} from "../../../../../shared/domain/errors/not-found.error";
 import {Category} from "../../../../domain/category.entity";
-import {UpdateCategoryUseCase} from "../../update-category.use-case";
+import {UpdateCategoryUseCase} from "../update-category.use-case";
 import {EntityValidationError} from "../../../../../shared/domain/validators/validation.error";
 
 describe('CreateCategoryUseCase Integration Tests', () => {

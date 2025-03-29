@@ -1,4 +1,4 @@
-import {ListCategoriesInput, ListCategoriesUseCase} from "../../list-categories.use-case";
+import {ListCategoriesInput, ListCategoriesUseCase} from "../list-categories.use-case";
 import {CategoryInMemoryRepository} from "../../../../infra/db/in-memory/category-in-memory.repository";
 import {CategorySearchResult} from "../../../../domain/category.repository";
 import {Category} from "../../../../domain/category.entity";

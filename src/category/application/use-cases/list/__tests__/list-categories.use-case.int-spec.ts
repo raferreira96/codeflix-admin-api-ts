@@ -1,4 +1,4 @@
-import {ListCategoriesInput, ListCategoriesUseCase} from "../../list-categories.use-case";
+import {ListCategoriesInput, ListCategoriesUseCase} from "../list-categories.use-case";
 import {CategorySequelizeRepository} from "../../../../infra/db/sequelize/category-sequelize.repository";
 import {Category} from "../../../../domain/category.entity";
 import {CategoryModel} from "../../../../infra/db/sequelize/category.model";

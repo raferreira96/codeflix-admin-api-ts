@@ -1,17 +1,11 @@
-import {IUseCase} from "../../../shared/application/use-case.interface";
-import {ICategoryRepository} from "../../domain/category.repository";
-import {Uuid} from "../../../shared/domain/value-objects/uuid.vo";
-import {NotFoundError} from "../../../shared/domain/errors/not-found.error";
-import {Category} from "../../domain/category.entity";
-import {CategoryOutput, CategoryOutputMapper} from "./common/category-output";
-import {EntityValidationError} from "../../../shared/domain/validators/validation.error";
-
-export type UpdateCategoryInput = {
-    id: string;
-    name?: string;
-    description?: string;
-    is_active?: boolean;
-};
+import {IUseCase} from "../../../../shared/application/use-case.interface";
+import {ICategoryRepository} from "../../../domain/category.repository";
+import {Uuid} from "../../../../shared/domain/value-objects/uuid.vo";
+import {NotFoundError} from "../../../../shared/domain/errors/not-found.error";
+import {Category} from "../../../domain/category.entity";
+import {CategoryOutput, CategoryOutputMapper} from "../common/category-output";
+import {EntityValidationError} from "../../../../shared/domain/validators/validation.error";
+import {UpdateCategoryInput} from "./update-category.input";
 
 export type UpdateCategoryOutput = CategoryOutput;
 

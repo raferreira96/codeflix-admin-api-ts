@@ -1,6 +1,6 @@
-import {IUseCase} from "../../../shared/application/use-case.interface";
-import {ICategoryRepository} from "../../domain/category.repository";
-import {Uuid} from "../../../shared/domain/value-objects/uuid.vo";
+import {IUseCase} from "../../../../shared/application/use-case.interface";
+import {ICategoryRepository} from "../../../domain/category.repository";
+import {Uuid} from "../../../../shared/domain/value-objects/uuid.vo";
 
 export type DeleteCategoryInput = {
     id: string;
