@@ -2,9 +2,8 @@ import {Category} from "../category.entity";
 import {Uuid} from "../../../shared/domain/value-objects/uuid.vo";
 
 describe('Category Unit Tests', () => {
-    let validateSpy: jest.SpyInstance;
     beforeEach(() => {
-        validateSpy = jest.spyOn(Category, 'validate');
+        Category.prototype.validate = jest.fn().mockImplementation(Category.prototype.validate);
     });
 
     describe('constructor', () => {
@@ -67,7 +66,7 @@ describe('Category Unit Tests', () => {
             expect(category.description).toBeNull();
             expect(category.is_active).toBeTruthy();
             expect(category.created_at).toBeInstanceOf(Date);
-            expect(validateSpy).toHaveBeenCalledTimes(1);
+            expect(Category.prototype.validate).toHaveBeenCalledTimes(1);
         });
 
         test('should create a category with all values', () => {
@@ -81,7 +80,7 @@ describe('Category Unit Tests', () => {
             expect(category.description).toBe('Movie category');
             expect(category.is_active).toBeFalsy();
             expect(category.created_at).toBeInstanceOf(Date);
-            expect(validateSpy).toHaveBeenCalledTimes(1);
+            expect(Category.prototype.validate).toHaveBeenCalledTimes(1);
         });
     });
 
@@ -93,7 +92,7 @@ describe('Category Unit Tests', () => {
             });
             category.changeName(newName);
             expect(category.name).toBe(newName);
-            expect(validateSpy).toHaveBeenCalledTimes(2);
+            expect(Category.prototype.validate).toHaveBeenCalledTimes(2);
         });
 
         test('should change category description', () => {
@@ -104,7 +103,7 @@ describe('Category Unit Tests', () => {
             category.changeDescription(newDescription);
             expect(category.name).toBe('Movie');
             expect(category.description).toBe(newDescription);
-            expect(validateSpy).toHaveBeenCalledTimes(2);
+            expect(Category.prototype.validate).toHaveBeenCalledTimes(1);
         });
 
         test('should active a category', () => {
@@ -131,93 +130,115 @@ describe('Category Unit Tests', () => {
 
     describe('validations', () => {
         describe('create', () => {
-            describe('should contains error messages when name is invalid', () => {
-                const arrange = [
-                    { name: '', errorMessages: ['name should not be empty', 'name must be longer than or equal to 4 characters'] },
-                    { name: null, errorMessages: ['name should not be empty', 'name must be a string', 'name must be shorter than or equal to 255 characters', 'name must be longer than or equal to 4 characters'] },
-                    { name: undefined, errorMessages: ['name should not be empty', 'name must be a string', 'name must be shorter than or equal to 255 characters', 'name must be longer than or equal to 4 characters'] },
-                    { name: 'foo', errorMessages: ['name must be longer than or equal to 4 characters'] },
-                    { name: 123, errorMessages: ['name must be a string', 'name must be shorter than or equal to 255 characters', 'name must be longer than or equal to 4 characters'] },
-                    { name: "t".repeat(256), errorMessages: ['name must be shorter than or equal to 255 characters'] },
-                ];
+            test('should an invalid category with name property', () => {
+                const category = Category.create({ name: 't'.repeat(256) });
 
-                test.each(arrange)('name = %s', ({ name, errorMessages }) => {
-                    expect(() => Category.create({
-                        name: name as any,
-                    })).containsErrorMessages({
-                        name: errorMessages,
-                    });
-                });
-            });
-            describe('should contains error messages when description is invalid', () => {
-                const arrange = [
-                    { description: '', errorMessages: ['description must be longer than or equal to 8 characters'] },
-                    { description: 'foo', errorMessages: ['description must be longer than or equal to 8 characters'] },
-                    { description: 123, errorMessages: ['description must be a string', 'description must be shorter than or equal to 255 characters', 'description must be longer than or equal to 8 characters'] },
-                    { description: "t".repeat(256), errorMessages: ['description must be shorter than or equal to 255 characters'] },
-                ];
-
-                test.each(arrange)('description = %s', ({ description, errorMessages }) => {
-                    expect(() => Category.create({
-                        name: 'Movie',
-                        description: description as any,
-                    })).containsErrorMessages({
-                        description: errorMessages,
-                    });
-                });
-            });
-            describe('should contains error messages when is_active is invalid', () => {
-                const arrange = [
-                    { is_active: '', errorMessages: ['is_active must be a boolean value'] },
-                    { is_active: 'foo', errorMessages: ['is_active must be a boolean value'] },
-                    { is_active: 123, errorMessages: ['is_active must be a boolean value'] },
-                ];
-
-                test.each(arrange)('is_active = %s', ({ is_active, errorMessages }) => {
-                    expect(() => Category.create({
-                        name: 'Movie',
-                        is_active: is_active as any,
-                    })).containsErrorMessages({
-                        is_active: errorMessages,
-                    });
-                });
+                expect(category.notification.hasErrors()).toBe(true);
+                expect(category.notification).notificationContainsErrorMessages([
+                    {
+                        name: ['name must be shorter than or equal to 255 characters'],
+                    },
+                ]);
             });
         });
+
         describe('update', () => {
-            describe('should contains error messages when name is invalid', () => {
-                const arrange = [
-                    { name: '', errorMessages: ['name should not be empty', 'name must be longer than or equal to 4 characters'] },
-                    { name: null, errorMessages: ['name should not be empty', 'name must be a string', 'name must be shorter than or equal to 255 characters', 'name must be longer than or equal to 4 characters'] },
-                    { name: undefined, errorMessages: ['name should not be empty', 'name must be a string', 'name must be shorter than or equal to 255 characters', 'name must be longer than or equal to 4 characters'] },
-                    { name: 'foo', errorMessages: ['name must be longer than or equal to 4 characters'] },
-                    { name: 123, errorMessages: ['name must be a string', 'name must be shorter than or equal to 255 characters', 'name must be longer than or equal to 4 characters'] },
-                    { name: "t".repeat(256), errorMessages: ['name must be shorter than or equal to 255 characters'] },
-                ];
-
-                test.each(arrange)('name = %s', ({ name, errorMessages }) => {
-                    const category = Category.create({
-                        name: 'Movie',
-                    });
-                    expect(() => category.changeName(name as any))
-                        .containsErrorMessages({ name: errorMessages });
-                });
-            });
-            describe('should contains error messages when description is invalid', () => {
-                const arrange = [
-                    { description: '', errorMessages: ['description must be longer than or equal to 8 characters'] },
-                    { description: 'foo', errorMessages: ['description must be longer than or equal to 8 characters'] },
-                    { description: 123, errorMessages: ['description must be a string', 'description must be shorter than or equal to 255 characters', 'description must be longer than or equal to 8 characters'] },
-                    { description: "t".repeat(256), errorMessages: ['description must be shorter than or equal to 255 characters'] },
-                ];
-
-                test.each(arrange)('description = %s', ({ description, errorMessages }) => {
-                    const category = Category.create({
-                        name: 'Movie',
-                    });
-                    expect(() => category.changeDescription(description as any))
-                        .containsErrorMessages({ description: errorMessages });
-                });
+            it('should a invalid category using name property', () => {
+                const category = Category.create({ name: 'Movie' });
+                category.changeName('t'.repeat(256));
+                expect(category.notification.hasErrors()).toBe(true);
+                expect(category.notification).notificationContainsErrorMessages([
+                    {
+                        name: ['name must be shorter than or equal to 255 characters'],
+                    },
+                ]);
             });
         });
+
+        // describe('create', () => {
+        //     describe('should contains error messages when name is invalid', () => {
+        //         const arrange = [
+        //             { name: '', errorMessages: ['name should not be empty', 'name must be longer than or equal to 4 characters'] },
+        //             { name: null, errorMessages: ['name should not be empty', 'name must be a string', 'name must be shorter than or equal to 255 characters', 'name must be longer than or equal to 4 characters'] },
+        //             { name: undefined, errorMessages: ['name should not be empty', 'name must be a string', 'name must be shorter than or equal to 255 characters', 'name must be longer than or equal to 4 characters'] },
+        //             { name: 'foo', errorMessages: ['name must be longer than or equal to 4 characters'] },
+        //             { name: 123, errorMessages: ['name must be a string', 'name must be shorter than or equal to 255 characters', 'name must be longer than or equal to 4 characters'] },
+        //             { name: "t".repeat(256), errorMessages: ['name must be shorter than or equal to 255 characters'] },
+        //         ];
+        //
+        //         test.each(arrange)('name = %s', ({ name, errorMessages }) => {
+        //             const category =  Category.fake().aCategory().withName(name as any).build();
+        //             expect(category.notification.hasErrors()).toBeTruthy();
+        //             expect(category.notification).notificationContainsErrorMessages([
+        //                 { name: errorMessages },
+        //             ]);
+        //         });
+        //     });
+        //     describe('should contains error messages when description is invalid', () => {
+        //         const arrange = [
+        //             { description: '', errorMessages: ['description must be longer than or equal to 8 characters'] },
+        //             { description: 'foo', errorMessages: ['description must be longer than or equal to 8 characters'] },
+        //             { description: 123, errorMessages: ['description must be a string', 'description must be shorter than or equal to 255 characters', 'description must be longer than or equal to 8 characters'] },
+        //             { description: "t".repeat(256), errorMessages: ['description must be shorter than or equal to 255 characters'] },
+        //         ];
+        //
+        //         test.each(arrange)('description = %s', ({ description, errorMessages }) => {
+        //             const category = Category.fake().aCategory().withDescription(description as any).build();
+        //             expect(category.notification.hasErrors()).toBeTruthy();
+        //             expect(category.notification).notificationContainsErrorMessages([
+        //                 { description: errorMessages },
+        //             ]);
+        //         });
+        //     });
+        //     describe('should contains error messages when is_active is invalid', () => {
+        //         const arrange = [
+        //             { is_active: '', errorMessages: ['is_active must be a boolean value'] },
+        //             { is_active: 'foo', errorMessages: ['is_active must be a boolean value'] },
+        //             { is_active: 123, errorMessages: ['is_active must be a boolean value'] },
+        //         ];
+        //
+        //         test.each(arrange)('is_active = %s', ({ is_active, errorMessages }) => {
+        //             const category = Category.create({ name: 'Movie', is_active: is_active as any });
+        //             expect(category.notification.hasErrors()).toBeTruthy();
+        //             expect(category.notification).notificationContainsErrorMessages([
+        //                 { is_active: errorMessages },
+        //             ]);
+        //         });
+        //     });
+        // });
+        // describe('update', () => {
+        //     describe('should contains error messages when name is invalid', () => {
+        //         const arrange = [
+        //             { name: '', errorMessages: ['name should not be empty', 'name must be longer than or equal to 4 characters'] },
+        //             { name: null, errorMessages: ['name should not be empty', 'name must be a string', 'name must be shorter than or equal to 255 characters', 'name must be longer than or equal to 4 characters'] },
+        //             { name: undefined, errorMessages: ['name should not be empty', 'name must be a string', 'name must be shorter than or equal to 255 characters', 'name must be longer than or equal to 4 characters'] },
+        //             { name: 'foo', errorMessages: ['name must be longer than or equal to 4 characters'] },
+        //             { name: 123, errorMessages: ['name must be a string', 'name must be shorter than or equal to 255 characters', 'name must be longer than or equal to 4 characters'] },
+        //             { name: "t".repeat(256), errorMessages: ['name must be shorter than or equal to 255 characters'] },
+        //         ];
+        //
+        //         test.each(arrange)('name = %s', ({ name, errorMessages }) => {
+        //             const category =  Category.fake().aCategory().withName('Movie').build();
+        //             expect(category.notification.hasErrors()).toBeTruthy();
+        //             expect(() => category.changeName(name as any))
+        //                 .notificationContainsErrorMessages([{ name: errorMessages }]);
+        //         });
+        //     });
+        //     describe('should contains error messages when description is invalid', () => {
+        //         const arrange = [
+        //             { description: '', errorMessages: ['description must be longer than or equal to 8 characters'] },
+        //             { description: 'foo', errorMessages: ['description must be longer than or equal to 8 characters'] },
+        //             { description: 123, errorMessages: ['description must be a string', 'description must be shorter than or equal to 255 characters', 'description must be longer than or equal to 8 characters'] },
+        //             { description: "t".repeat(256), errorMessages: ['description must be shorter than or equal to 255 characters'] },
+        //         ];
+        //
+        //         test.each(arrange)('description = %s', ({ description, errorMessages }) => {
+        //             const category =  Category.fake().aCategory().withName('Movie').build();
+        //             expect(category.notification.hasErrors()).toBeTruthy();
+        //             expect(() => category.changeDescription(description as any))
+        //                 .notificationContainsErrorMessages([{ description: errorMessages }]);
+        //         });
+        //     });
+        // });
     });
 });

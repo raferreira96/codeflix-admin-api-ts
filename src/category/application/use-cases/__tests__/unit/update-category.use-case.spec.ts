@@ -3,6 +3,7 @@ import {UpdateCategoryUseCase} from "../../update-category.use-case";
 import {InvalidUuidError, Uuid} from "../../../../../shared/domain/value-objects/uuid.vo";
 import {NotFoundError} from "../../../../../shared/domain/errors/not-found.error";
 import {Category} from "../../../../domain/category.entity";
+import {EntityValidationError} from "../../../../../shared/domain/validators/validation.error";
 
 describe('UpdateCategoryUseCase Unit Tests', () => {
     let useCase: UpdateCategoryUseCase;
@@ -11,6 +12,13 @@ describe('UpdateCategoryUseCase Unit Tests', () => {
     beforeEach(() => {
         categoryRepository = new CategoryInMemoryRepository();
         useCase = new UpdateCategoryUseCase(categoryRepository);
+    })
+
+    test('should throw error when name is invalid', async () => {
+        const category = Category.fake().aCategory().withName('Movie').build();
+        categoryRepository.items = [category];
+        const input = { id: category.category_id.id, name: 't'.repeat(256) };
+        await expect(useCase.execute(input)).rejects.toThrow(EntityValidationError);
     });
 
     test('should throw error when category not found', async () => {

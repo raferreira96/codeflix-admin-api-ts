@@ -1,5 +1,7 @@
 import {CreateCategoryUseCase} from "../../create-category.use-case";
 import {CategoryInMemoryRepository} from "../../../../infra/db/in-memory/category-in-memory.repository";
+import {Category} from "../../../../domain/category.entity";
+import {EntityValidationError} from "../../../../../shared/domain/validators/validation.error";
 
 class CategoryRepository {
 }
@@ -11,6 +13,11 @@ describe('CreateCategoryUseCase Unit Tests', () => {
     beforeEach(() => {
         categoryRepository = new CategoryInMemoryRepository();
         useCase = new CreateCategoryUseCase(categoryRepository);
+    });
+
+    test('should throw error when name is invalid', async () => {
+        const input = { name: 't'.repeat(256) };
+        await expect(useCase.execute(input)).rejects.toThrow(EntityValidationError);
     });
 
     test('should create and insert a category', async () => {

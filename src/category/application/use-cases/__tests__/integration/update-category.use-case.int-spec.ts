@@ -5,6 +5,7 @@ import {Uuid} from "../../../../../shared/domain/value-objects/uuid.vo";
 import {NotFoundError} from "../../../../../shared/domain/errors/not-found.error";
 import {Category} from "../../../../domain/category.entity";
 import {UpdateCategoryUseCase} from "../../update-category.use-case";
+import {EntityValidationError} from "../../../../../shared/domain/validators/validation.error";
 
 describe('CreateCategoryUseCase Integration Tests', () => {
     let useCase: UpdateCategoryUseCase;
@@ -15,6 +16,18 @@ describe('CreateCategoryUseCase Integration Tests', () => {
     beforeEach(() => {
         repository = new CategorySequelizeRepository(CategoryModel);
         useCase = new UpdateCategoryUseCase(repository);
+    });
+
+    test('should throw error when name is invalid', async () => {
+        const category = Category.fake().aCategory().build();
+        await repository.insert(category);
+
+        await expect(() =>
+            useCase.execute({
+                id: category.category_id.id,
+                name: 'a'.repeat(256),
+            }),
+        ).rejects.toThrow(EntityValidationError);
     });
 
     test('should throw error when category not found', async () => {

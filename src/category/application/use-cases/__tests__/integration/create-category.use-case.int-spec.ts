@@ -3,6 +3,7 @@ import {CategorySequelizeRepository} from "../../../../infra/db/sequelize/catego
 import {setupSequelize} from "../../../../../shared/infra/testing/helpers";
 import {CategoryModel} from "../../../../infra/db/sequelize/category.model";
 import {Uuid} from "../../../../../shared/domain/value-objects/uuid.vo";
+import {EntityValidationError} from "../../../../../shared/domain/validators/validation.error";
 
 describe('CreateCategoryUseCase Integration Tests', () => {
     let useCase: CreateCategoryUseCase;
@@ -13,6 +14,11 @@ describe('CreateCategoryUseCase Integration Tests', () => {
     beforeEach(() => {
         repository = new CategorySequelizeRepository(CategoryModel);
         useCase = new CreateCategoryUseCase(repository);
+    });
+
+    test('should throw error when category is invalid', async () => {
+        const input = { name: 't'.repeat(256) };
+        await expect(() => useCase.execute(input)).rejects.toThrow(EntityValidationError);
     });
 
     test('should create and insert a category', async () => {
