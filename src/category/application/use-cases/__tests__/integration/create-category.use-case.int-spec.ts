@@ -1,8 +1,8 @@
 import {CreateCategoryUseCase} from "../../create-category.use-case";
-import {CategorySequelizeRepository} from "../../../infra/db/sequelize/category-sequelize.repository";
-import {setupSequelize} from "../../../../shared/infra/testing/helpers";
-import {CategoryModel} from "../../../infra/db/sequelize/category.model";
-import {Uuid} from "../../../../shared/domain/value-objects/uuid.vo";
+import {CategorySequelizeRepository} from "../../../../infra/db/sequelize/category-sequelize.repository";
+import {setupSequelize} from "../../../../../shared/infra/testing/helpers";
+import {CategoryModel} from "../../../../infra/db/sequelize/category.model";
+import {Uuid} from "../../../../../shared/domain/value-objects/uuid.vo";
 
 describe('CreateCategoryUseCase Integration Tests', () => {
     let useCase: CreateCategoryUseCase;

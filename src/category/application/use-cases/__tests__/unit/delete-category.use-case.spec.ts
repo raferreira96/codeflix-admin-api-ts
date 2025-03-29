@@ -1,8 +1,8 @@
-import {CategoryInMemoryRepository} from "../../../infra/db/in-memory/category-in-memory.repository";
+import {CategoryInMemoryRepository} from "../../../../infra/db/in-memory/category-in-memory.repository";
 import {DeleteCategoryUseCase} from "../../delete-category.use-case";
-import {InvalidUuidError, Uuid} from "../../../../shared/domain/value-objects/uuid.vo";
-import {NotFoundError} from "../../../../shared/domain/errors/not-found.error";
-import {Category} from "../../../domain/category.entity";
+import {InvalidUuidError, Uuid} from "../../../../../shared/domain/value-objects/uuid.vo";
+import {NotFoundError} from "../../../../../shared/domain/errors/not-found.error";
+import {Category} from "../../../../domain/category.entity";
 
 describe('DeleteCategoryUseCase Unit Tests', () => {
     let useCase: DeleteCategoryUseCase;
