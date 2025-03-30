@@ -25,7 +25,7 @@ const config: Config = {
   // collectCoverageFrom: undefined,
 
   // The directory where Jest should output its coverage files
-  coverageDirectory: "../coverage",
+  // coverageDirectory: "../coverage",
 
   // An array of regexp pattern strings used to skip coverage collection
   // coveragePathIgnorePatterns: [
@@ -130,7 +130,7 @@ const config: Config = {
   // restoreMocks: false,
 
   // The root directory that Jest should scan for tests and modules within
-  rootDir: './src',
+  // rootDir: './src',
 
   // A list of paths to directories that Jest should use to search for files in
   // roots: [
@@ -145,7 +145,7 @@ const config: Config = {
 
   // A list of paths to modules that run some code to configure or set up the testing framework before each test
   setupFilesAfterEnv: [
-      './shared/infra/testing/expect-helpers.ts',
+      './core/shared/infra/testing/expect-helpers.ts',
   ],
 
   // The number of seconds after which a test is considered as slow and reported as such in the results.
@@ -184,9 +184,9 @@ const config: Config = {
   // testRunner: "jest-circus/runner",
 
   // A map from regular expressions to paths to transformers
-  transform: {
-    '^.+\\.(t|j)sx?$$': '@swc/jest',
-  },
+  // transform: {
+  //   '^.+\\.(t|j)sx?$$': '@swc/jest',
+  // },
 
   // An array of regexp pattern strings that are matched against all source file paths, matched files will skip transformation
   // transformIgnorePatterns: [
@@ -205,6 +205,21 @@ const config: Config = {
 
   // Whether to use watchman for file crawling
   // watchman: true,
+    moduleFileExtensions: [
+      "js",
+      "json",
+      "ts"
+    ],
+    rootDir: "src",
+    testRegex: ".*\\.*spec\\.ts$",
+    transform: {
+      "^.+\\.(t|j)sx?$$": '@swc/jest'
+    },
+    collectCoverageFrom: [
+      "**/*.(t|j)s"
+    ],
+    coverageDirectory: "../coverage",
+    testEnvironment: "node"
 };
 
 export default config;
