@@ -1,9 +1,9 @@
-name: codeflix-admin-api
+name: codeflix-admin-api-dev
 
 services:
   app:
     build: .
-    image: codeflix-admin-api
+    image: codeflix-admin-api-dev
     container_name: app
     command: ./.docker/start.sh
     ports:
@@ -13,16 +13,16 @@ services:
 
   db:
     image: mysql:8-debian
-    container_name: db
+    container_name: db-dev
     environment:
       - MYSQL_DATABASE=codeflix
       - MYSQL_ROOT_PASSWORD=root
-    tmpfs:
-      - /var/lib/mysql
+    volumes:
+      - ./.docker/dbdata:/var/lib/mysql:delegated
     security_opt:
       - seccomp:unconfined
 
 #networks:
 #  network:
-#    name: codeflix-admin-api
+#    name: codeflix-admin-api-dev
 #    driver: bridge
