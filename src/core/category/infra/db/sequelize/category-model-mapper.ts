@@ -9,7 +9,7 @@ export class CategoryModelMapper {
             category_id: entity.category_id.id,
             name: entity.name,
             description: entity.description,
-            is_active: entity.is_active,
+            is_active: entity.is_active as any,
             created_at: entity.created_at,
         });
     }

@@ -22,7 +22,7 @@ export class UpdateCategoryUseCase implements IUseCase<UpdateCategoryInput, Upda
 
         input.name && category.changeName(input.name);
         if ('description' in input) {
-            category.changeDescription(input.description);
+            category.changeDescription(input.description as string);
         }
 
         if (input.is_active === true) category.activate();

@@ -10,7 +10,7 @@ describe('CategoryInMemoryRepository Unit Tests', () => {
         const items = [Category.fake().aCategory().build()];
         const filterSpy = jest.spyOn(items, 'filter' as any);
 
-        const itemsFitered = await repository['applyFilter'](items, null);
+        const itemsFitered = await repository['applyFilter'](items, null as any);
         expect(filterSpy).not.toHaveBeenCalled();
         expect(itemsFitered).toStrictEqual(items);
     });

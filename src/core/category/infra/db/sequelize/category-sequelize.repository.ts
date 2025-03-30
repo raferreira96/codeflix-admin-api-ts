@@ -36,18 +36,18 @@ export class CategorySequelizeRepository implements ICategoryRepository {
         const offset = (props.page - 1) * props.per_page;
         const limit = props.per_page;
 
-        const { rows: models, count } = await this.categoryModel.findAndCountAll({
-            ...(props.filter && {
-                where: {
-                    name: { [Op.like]: `%${props.filter}%` }
-                },
-            }),
-            ...(props.sort && this.sortableFields.includes(props.sort)
-                ? { order: [[props.sort, props.sort_dir]] }
-                : { order: [['created_at', 'desc']] }),
-            offset,
-            limit,
-        });
+const { rows: models, count } = await this.categoryModel.findAndCountAll({
+    where: {
+        ...(props.filter && {
+            name: { [Op.like]: `%${props.filter}%` }
+        }),
+    },
+    order: props.sort && this.sortableFields.includes(props.sort)
+        ? [[props.sort, props.sort_dir]] as any
+        : [['created_at', 'desc']],
+    offset,
+    limit,
+});
 
         return new CategorySearchResult({
             items: models.map((model) => CategoryModelMapper.toEntity(model)),

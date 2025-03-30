@@ -21,7 +21,7 @@ describe('CategorySequelizeRepository Integration Tests', () => {
         await repository.insert(category);
 
         const entity = await repository.findById(category.category_id);
-        expect(entity.toJSON()).toStrictEqual(category.toJSON());
+        expect(entity!.toJSON()).toStrictEqual(category.toJSON());
     });
 
     test('should insert a bulk of categories', async () => {
@@ -40,7 +40,7 @@ describe('CategorySequelizeRepository Integration Tests', () => {
         const category = Category.fake().aCategory().build();
         await repository.insert(category);
         categoryFounded = await repository.findById(category.category_id);
-        expect(categoryFounded.toJSON()).toStrictEqual(category.toJSON());
+        expect(categoryFounded!.toJSON()).toStrictEqual(category.toJSON());
     });
 
     test('should find all categories', async () => {
@@ -62,14 +62,14 @@ describe('CategorySequelizeRepository Integration Tests', () => {
         const category = Category.fake().aCategory().withName('Movie').build();
         await repository.insert(category);
         let categoryFounded = await repository.findById(category.category_id);
-        expect(categoryFounded.name).toBe('Movie');
+        expect(categoryFounded!.name).toBe('Movie');
 
         category.changeName('Movie Updated');
         await repository.update(category);
 
         categoryFounded = await repository.findById(category.category_id);
-        expect(categoryFounded.name).toBe('Movie Updated');
-        expect(categoryFounded.toJSON()).toStrictEqual(category.toJSON());
+        expect(categoryFounded!.name).toBe('Movie Updated');
+        expect(categoryFounded!.toJSON()).toStrictEqual(category.toJSON());
     });
 
     test('should throw an error on delete when category not found', async () => {

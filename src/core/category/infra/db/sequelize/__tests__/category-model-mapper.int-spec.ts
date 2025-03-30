@@ -12,7 +12,7 @@ describe('CategoryModelMapper Integration Tests', () => {
         const model = CategoryModel.build({
             category_id: '9366b0a2-4f3c-4d7e-8b1f-5a6c9e0d5f3b',
             name: 'a'.repeat(256),
-        });
+        } as any);
 
         try {
             CategoryModelMapper.toEntity(model);

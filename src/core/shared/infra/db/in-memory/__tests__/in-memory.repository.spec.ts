@@ -86,7 +86,7 @@ describe('InMemoryRepository Unit Tests', () => {
         await repository.bulkInsert([entity1, entity2]);
 
         const entityFound = await repository.findById(entity2.entity_id);
-        expect(entityFound.entity_id).toEqual(entity2.entity_id);
+        expect(entityFound!.entity_id).toEqual(entity2.entity_id);
     });
 
     test('should return null when entity not found by id', async () => {
@@ -109,8 +109,8 @@ describe('InMemoryRepository Unit Tests', () => {
         await repository.update(entity);
 
         const entityFound = await repository.findById(entity.entity_id);
-        expect(entityFound.name).toEqual('Updated Test');
-        expect(entityFound.price).toEqual(200);
+        expect(entityFound!.name).toEqual('Updated Test');
+        expect(entityFound!.price).toEqual(200);
     });
 
     test('should throw NotFoundError when updating non-existing entity', async () => {
