@@ -27,6 +27,7 @@
     "@nestjs/mapped-types": "*",
     "@nestjs/platform-express": "^11.0.1",
     "@nestjs/sequelize": "^11.0.0",
+    "class-transformer": "^0.5.1",
     "dotenv": "^16.4.7",
     "joi": "^17.13.3",
     "mysql2": "^3.14.0",
