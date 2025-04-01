@@ -1,6 +1,6 @@
-import {IUseCase} from "../../../../shared/application/use-case.interface";
+import {IUseCase} from "@core/shared/application/use-case.interface";
 import {CategorySearchParams, CategorySearchResult, ICategoryRepository} from "../../../domain/category.repository";
-import {PaginationOutput, PaginationOutputMapper} from "../../../../shared/application/pagination-output";
+import {PaginationOutput, PaginationOutputMapper} from "@core/shared/application/pagination-output";
 import {CategoryOutput, CategoryOutputMapper} from "../common/category-output";
 
 export type ListCategoriesInput = CategorySearchParams;
