@@ -9,7 +9,7 @@ type GetCategoryInput = {
     id: string;
 };
 
-type GetCategoryOutput = CategoryOutput;
+export type GetCategoryOutput = CategoryOutput;
 
 export class GetCategoryUseCase implements IUseCase<GetCategoryInput, GetCategoryOutput> {
     constructor(private readonly categoryRepository: ICategoryRepository) {}

@@ -173,7 +173,7 @@ describe('CreateCategoryUseCase Integration Tests', () => {
                 created_at: entityUpdated!.created_at,
             });
             expect(entityUpdated!.toJSON()).toStrictEqual({
-                category_id: category.category_id,
+                category_id: category.category_id.id,
                 name: i.expected.name,
                 description: i.expected.description,
                 is_active: i.expected.is_active,
