@@ -70,7 +70,7 @@ export class Category extends Entity {
         return CategoryFakeBuilder;
     }
 
-    toJSON(): CategoryConstructorProps {
+    toJSON() {
         return {
             category_id: this.category_id.id,
             name: this.name,
