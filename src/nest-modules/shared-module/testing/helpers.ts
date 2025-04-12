@@ -1,5 +1,4 @@
 import {INestApplication} from "@nestjs/common";
-import {App} from "supertest/types";
 import {Test, TestingModule} from "@nestjs/testing";
 import {AppModule} from "../../../app.module";
 import {applyGlobalConfig} from "../../global-config";
@@ -7,7 +6,7 @@ import {Sequelize} from "sequelize-typescript";
 import {getConnectionToken} from "@nestjs/sequelize";
 
 export function startApp() {
-    let _app: INestApplication<App>;
+    let _app: INestApplication;
 
     beforeEach(async () => {
         const moduleFixture: TestingModule = await Test.createTestingModule({
@@ -16,12 +15,10 @@ export function startApp() {
 
         const sequelize = moduleFixture.get<Sequelize>(getConnectionToken());
 
-        await sequelize.sync({force: true});
+        await sequelize.sync({ force: true });
 
         _app = moduleFixture.createNestApplication();
-
         applyGlobalConfig(_app);
-
         await _app.init();
     });
 
@@ -32,6 +29,6 @@ export function startApp() {
     return {
         get app() {
             return _app;
-        }
-    }
+        },
+    };
 }

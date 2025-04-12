@@ -218,6 +218,17 @@ const config: Config = {
     collectCoverageFrom: [
       "**/*.(t|j)s"
     ],
+    coveragePathIgnorePatterns: [
+        "node_modules",
+        ".interface.ts",
+        ".module.ts",
+        "shared/testing",
+        "shared-module/testing",
+        "validator-rules.ts",
+        "-fixtures.ts",
+        ".input.ts",
+        ".d.ts",
+    ],
     coverageDirectory: "../coverage",
     testEnvironment: "node"
 };

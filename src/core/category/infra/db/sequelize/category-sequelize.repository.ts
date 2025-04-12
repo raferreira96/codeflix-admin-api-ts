@@ -1,13 +1,20 @@
 import {CategorySearchParams, CategorySearchResult, ICategoryRepository} from "../../../domain/category.repository";
 import {Category} from "../../../domain/category.entity";
-import {Op} from "sequelize";
-import {Uuid} from "../../../../shared/domain/value-objects/uuid.vo";
+import {literal, Op} from "sequelize";
+import {Uuid} from "@core/shared/domain/value-objects/uuid.vo";
 import {CategoryModel} from "./category.model";
-import {NotFoundError} from "../../../../shared/domain/errors/not-found.error";
+import {NotFoundError} from "@core/shared/domain/errors/not-found.error";
 import {CategoryModelMapper} from "./category-model-mapper";
+import {SortDirection} from "@core/shared/domain/repository/search-params";
 
 export class CategorySequelizeRepository implements ICategoryRepository {
     sortableFields: string[] = ['name', 'created_at'];
+
+    orderBy = {
+        mysql: {
+            name: (sort_dir: SortDirection) => literal(`binary name ${sort_dir}`),
+        },
+    };
 
     constructor(private categoryModel: typeof CategoryModel) {};
 
@@ -36,18 +43,18 @@ export class CategorySequelizeRepository implements ICategoryRepository {
         const offset = (props.page - 1) * props.per_page;
         const limit = props.per_page;
 
-const { rows: models, count } = await this.categoryModel.findAndCountAll({
-    where: {
-        ...(props.filter && {
-            name: { [Op.like]: `%${props.filter}%` }
-        }),
-    },
-    order: props.sort && this.sortableFields.includes(props.sort)
-        ? [[props.sort, props.sort_dir]] as any
-        : [['created_at', 'desc']],
-    offset,
-    limit,
-});
+        const { rows: models, count } = await this.categoryModel.findAndCountAll({
+            where: {
+                ...(props.filter && {
+                    name: { [Op.like]: `%${props.filter}%` }
+                }),
+            },
+            order: props.sort && this.sortableFields.includes(props.sort)
+                ? this.formatSort(props.sort, props.sort_dir)
+                : [['created_at', 'desc']],
+            offset,
+            limit,
+        });
 
         return new CategorySearchResult({
             items: models.map((model) => CategoryModelMapper.toEntity(model)),
@@ -82,6 +89,14 @@ const { rows: models, count } = await this.categoryModel.findAndCountAll({
         }
 
         await this.categoryModel.destroy({ where: { category_id: categoryId } });
+    }
+
+    private formatSort(sort: string, sort_dir: SortDirection|null) {
+        const dialect = this.categoryModel.sequelize?.getDialect() as 'mysql';
+        if (this.orderBy[dialect] && this.orderBy[dialect][sort]) {
+            return this.orderBy[dialect][sort](sort_dir);
+        }
+        return [[sort, sort_dir]];
     }
 
     getEntity(): { new(...args: any[]): Category } {
