@@ -5,7 +5,7 @@ import path from "path";
 
 const dirname = path.resolve();
 
-export function migrator(sequelize: Sequelize, options: Partial<UmzugOptions>) {
+export function migrator(sequelize: Sequelize, options?: Partial<UmzugOptions>) {
     return new Umzug({
         migrations: {
             glob: [
