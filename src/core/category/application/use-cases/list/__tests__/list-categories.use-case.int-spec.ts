@@ -1,6 +1,6 @@
 import {ListCategoriesInput, ListCategoriesUseCase} from "../list-categories.use-case";
 import {CategorySequelizeRepository} from "../../../../infra/db/sequelize/category-sequelize.repository";
-import {Category} from "../../../../domain/category.entity";
+import {Category} from "../../../../domain/category.aggregate";
 import {CategoryModel} from "../../../../infra/db/sequelize/category.model";
 import {setupSequelize} from "../../../../../shared/infra/testing/helpers";
 import {CategoryOutputMapper} from "../../common/category-output";

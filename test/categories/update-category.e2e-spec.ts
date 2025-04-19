@@ -1,5 +1,5 @@
 import {startApp} from "../../src/nest-modules/shared-module/testing/helpers";
-import {Category} from "@core/category/domain/category.entity";
+import {Category} from "@core/category/domain/category.aggregate";
 import request from "supertest";
 import {UpdateCategoryFixture} from "../../src/nest-modules/categories/testing/category-fixture";
 import {ICategoryRepository} from "@core/category/domain/category.repository";

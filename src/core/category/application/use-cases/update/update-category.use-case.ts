@@ -1,8 +1,7 @@
 import {IUseCase} from "../../../../shared/application/use-case.interface";
 import {ICategoryRepository} from "../../../domain/category.repository";
-import {Uuid} from "../../../../shared/domain/value-objects/uuid.vo";
 import {NotFoundError} from "../../../../shared/domain/errors/not-found.error";
-import {Category} from "../../../domain/category.entity";
+import {Category, CategoryId} from "../../../domain/category.aggregate";
 import {CategoryOutput, CategoryOutputMapper} from "../common/category-output";
 import {EntityValidationError} from "../../../../shared/domain/validators/validation.error";
 import {UpdateCategoryInput} from "./update-category.input";
@@ -13,8 +12,8 @@ export class UpdateCategoryUseCase implements IUseCase<UpdateCategoryInput, Upda
     constructor(private readonly categoryRepository: ICategoryRepository) {}
 
     async execute(input: UpdateCategoryInput): Promise<UpdateCategoryOutput> {
-        const uuid = new Uuid(input.id);
-        const category = await this.categoryRepository.findById(uuid);
+        const categoryId = new CategoryId(input.id);
+        const category = await this.categoryRepository.findById(categoryId);
 
         if (!category) {
             throw new NotFoundError(input.id, Category);

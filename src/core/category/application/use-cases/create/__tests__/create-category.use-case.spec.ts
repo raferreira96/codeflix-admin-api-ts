@@ -1,6 +1,5 @@
 import {CreateCategoryUseCase} from "../create-category.use-case";
 import {CategoryInMemoryRepository} from "../../../../infra/db/in-memory/category-in-memory.repository";
-import {Category} from "../../../../domain/category.entity";
 import {EntityValidationError} from "../../../../../shared/domain/validators/validation.error";
 
 class CategoryRepository {

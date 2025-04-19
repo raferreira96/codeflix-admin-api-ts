@@ -2,9 +2,8 @@ import {CategorySequelizeRepository} from "../../../../infra/db/sequelize/catego
 import {setupSequelize} from "../../../../../shared/infra/testing/helpers";
 import {CategoryModel} from "../../../../infra/db/sequelize/category.model";
 import {DeleteCategoryUseCase} from "../delete-category.use-case";
-import {Uuid} from "../../../../../shared/domain/value-objects/uuid.vo";
 import {NotFoundError} from "../../../../../shared/domain/errors/not-found.error";
-import {Category} from "../../../../domain/category.entity";
+import {Category, CategoryId} from "../../../../domain/category.aggregate";
 
 describe('DeleteCategoryUseCase Integration Tests', () => {
     let useCase: DeleteCategoryUseCase;
@@ -18,10 +17,10 @@ describe('DeleteCategoryUseCase Integration Tests', () => {
     });
 
     test('should throw error when category not found', async () => {
-        const uuid = new Uuid();
-        await expect(() => useCase.execute({ id: uuid.id }))
+        const categoryId = new CategoryId();
+        await expect(() => useCase.execute({ id: categoryId.id }))
             .rejects
-            .toThrow(new NotFoundError(uuid.id, Category));
+            .toThrow(new NotFoundError(categoryId.id, Category));
     });
 
     test('should delete a category', async () => {

@@ -2,7 +2,7 @@ import {startApp} from "../../src/nest-modules/shared-module/testing/helpers";
 import request from "supertest";
 import {CATEGORY_PROVIDERS} from "../../src/nest-modules/categories/categories.providers";
 import {ICategoryRepository} from "@core/category/domain/category.repository";
-import {Category} from "@core/category/domain/category.entity";
+import {Category} from "@core/category/domain/category.aggregate";
 import {GetCategoryFixture} from "../../src/nest-modules/categories/testing/category-fixture";
 import {CategoriesController} from "../../src/nest-modules/categories/categories.controller";
 import {CategoryOutputMapper} from "@core/category/application/use-cases/common/category-output";

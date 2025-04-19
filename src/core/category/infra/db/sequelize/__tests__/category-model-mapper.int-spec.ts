@@ -1,8 +1,7 @@
 import {CategoryModel} from "../category.model";
-import {Uuid} from "../../../../../shared/domain/value-objects/uuid.vo";
 import {CategoryModelMapper} from "../category-model-mapper";
 import {EntityValidationError} from "../../../../../shared/domain/validators/validation.error";
-import {Category} from "../../../../domain/category.entity";
+import {Category, CategoryId} from "../../../../domain/category.aggregate";
 import {setupSequelize} from "../../../../../shared/infra/testing/helpers";
 
 describe('CategoryModelMapper Integration Tests', () => {
@@ -37,7 +36,7 @@ describe('CategoryModelMapper Integration Tests', () => {
 
         const entity = CategoryModelMapper.toEntity(model);
         expect(entity.toJSON()).toStrictEqual(
-            new Category({ ...categoryData, category_id: new Uuid(categoryData.category_id) }).toJSON(),
+            new Category({ ...categoryData, category_id: new CategoryId(categoryData.category_id) }).toJSON(),
         );
     });
 
@@ -45,7 +44,7 @@ describe('CategoryModelMapper Integration Tests', () => {
         const created_at = new Date();
 
         const categoryData = {
-            category_id: new Uuid('9366b0a2-4f3c-4d7e-8b1f-5a6c9e0d5f3b'),
+            category_id: new CategoryId('9366b0a2-4f3c-4d7e-8b1f-5a6c9e0d5f3b'),
             name: 'Category 1',
             description: 'Description 1',
             is_active: true,

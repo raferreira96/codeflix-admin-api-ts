@@ -1,7 +1,6 @@
 import {CategorySearchParams, CategorySearchResult, ICategoryRepository} from "../../../domain/category.repository";
-import {Category} from "../../../domain/category.entity";
+import {Category, CategoryId} from "../../../domain/category.aggregate";
 import {literal, Op} from "sequelize";
-import {Uuid} from "@core/shared/domain/value-objects/uuid.vo";
 import {CategoryModel} from "./category.model";
 import {NotFoundError} from "@core/shared/domain/errors/not-found.error";
 import {CategoryModelMapper} from "./category-model-mapper";
@@ -33,7 +32,7 @@ export class CategorySequelizeRepository implements ICategoryRepository {
         return models.map((model) => CategoryModelMapper.toEntity(model));
     }
 
-    async findById(entity_id: Uuid): Promise<Category | null> {
+    async findById(entity_id: CategoryId): Promise<Category | null> {
         const model = await this._get(entity_id.id);
 
         return model ? CategoryModelMapper.toEntity(model) : null;
@@ -81,7 +80,7 @@ export class CategorySequelizeRepository implements ICategoryRepository {
         );
     }
 
-    async delete(entity_id: Uuid): Promise<void> {
+    async delete(entity_id: CategoryId): Promise<void> {
         const categoryId = entity_id.id;
         const model = await this._get(categoryId);
         if (!model) {

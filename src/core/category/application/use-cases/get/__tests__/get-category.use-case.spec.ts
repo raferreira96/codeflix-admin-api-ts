@@ -1,7 +1,7 @@
 import {CategoryInMemoryRepository} from "../../../../infra/db/in-memory/category-in-memory.repository";
-import {InvalidUuidError, Uuid} from "../../../../../shared/domain/value-objects/uuid.vo";
+import {InvalidUuidError} from "../../../../../shared/domain/value-objects/uuid.vo";
 import {NotFoundError} from "../../../../../shared/domain/errors/not-found.error";
-import {Category} from "../../../../domain/category.entity";
+import {Category, CategoryId} from "../../../../domain/category.aggregate";
 import {GetCategoryUseCase} from "../get-category.use-case";
 
 describe('GetCategoryUseCase Unit Tests', () => {
@@ -20,11 +20,11 @@ describe('GetCategoryUseCase Unit Tests', () => {
             .toThrow(new InvalidUuidError());
         expect(spyFindById).not.toHaveBeenCalled();
 
-        const uuid = new Uuid();
+        const categoryId = new CategoryId();
 
-        await expect(() => useCase.execute({ id: uuid.id }))
+        await expect(() => useCase.execute({ id: categoryId.id }))
             .rejects
-            .toThrow(new NotFoundError(uuid.id, Category));
+            .toThrow(new NotFoundError(categoryId.id, Category));
         expect(spyFindById).toHaveBeenCalledTimes(1);
     });
 

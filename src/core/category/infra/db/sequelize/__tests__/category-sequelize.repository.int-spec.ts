@@ -1,7 +1,6 @@
 import {CategorySequelizeRepository} from "../category-sequelize.repository";
 import {CategoryModel} from "../category.model";
-import {Category} from "../../../../domain/category.entity";
-import {Uuid} from "../../../../../shared/domain/value-objects/uuid.vo";
+import {Category, CategoryId} from "../../../../domain/category.aggregate";
 import {NotFoundError} from "../../../../../shared/domain/errors/not-found.error";
 import {CategoryModelMapper} from "../category-model-mapper";
 import {CategorySearchParams, CategorySearchResult} from "../../../../domain/category.repository";
@@ -34,7 +33,7 @@ describe('CategorySequelizeRepository Integration Tests', () => {
     });
 
     test('should find a category by id', async () => {
-        let categoryFounded = await repository.findById(new Uuid());
+        let categoryFounded = await repository.findById(new CategoryId());
         expect(categoryFounded).toBeNull();
 
         const category = Category.fake().aCategory().build();

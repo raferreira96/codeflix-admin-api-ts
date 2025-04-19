@@ -1,6 +1,6 @@
 import { InMemorySearchableRepository} from "../../../../shared/infra/db/in-memory/in-memory.repository";
 import {Uuid} from "../../../../shared/domain/value-objects/uuid.vo";
-import {Category} from "../../../domain/category.entity";
+import {Category} from "../../../domain/category.aggregate";
 import {SortDirection} from "../../../../shared/domain/repository/search-params";
 import {CategoryFilter, ICategoryRepository} from "../../../domain/category.repository";
 
