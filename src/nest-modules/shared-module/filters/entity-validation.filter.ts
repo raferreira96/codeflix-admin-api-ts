@@ -12,7 +12,7 @@ export class EntityValidationFilter implements ExceptionFilter {
             statusCode: 422,
             error: 'Unprocessable Entity',
             message: union(
-                ...exception.errors.reduce(
+                ...exception.error.reduce(
                     (acc, error) =>
                         acc.concat(
                             //@ts-expect-error - error can be string
