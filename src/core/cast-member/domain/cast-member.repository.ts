@@ -73,7 +73,7 @@ export class CastMemberSearchParams extends DefaultSearchParams<CastMemberFilter
 
 export class CastMemberSearchResult extends DefaultSearchResult<CastMember> {}
 
-export interface ICastMemberRespository
+export interface ICastMemberRepository
     extends ISearchableRepository<
         CastMember,
         CastMemberId,
