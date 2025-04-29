@@ -1,46 +1,75 @@
 import {CreateCastMemberUseCase} from "@core/cast-member/application/use-cases/create/create-cast-member.use-case";
-import {setupSequelize} from "@core/shared/infra/testing/helpers";
 import {CastMemberTypes} from "@core/cast-member/domain/cast-member-type.vo";
-import {CastMemberId} from "@core/cast-member/domain/cast-member.aggregate";
-import {
-    CastMemberModel,
-    CastMemberSequelizeRepository
-} from "@core/cast-member/infra/db/sequelize/cast-member-sequelize.repository";
+import {CastMemberInMemoryRepository} from "@core/cast-member/infra/db/in-memory/cast-member-in-memory.repository";
+import {CreateCastMemberInput} from "@core/cast-member/application/use-cases/create/create-cast-member.input";
+import {EntityValidationError} from "@core/shared/domain/validators/validation.error";
 
-describe('CreateCastMemberUseCase Integration Tests', () => {
+describe('CreateCastMemberUseCase Unit Tests', () => {
     let useCase: CreateCastMemberUseCase;
-    let repository: CastMemberSequelizeRepository;
-
-    setupSequelize({ models: [CastMemberModel] });
+    let repository: CastMemberInMemoryRepository;
 
     beforeEach(() => {
-        repository = new CastMemberSequelizeRepository(CastMemberModel);
+        repository = new CastMemberInMemoryRepository();
         useCase = new CreateCastMemberUseCase(repository);
+        jest.restoreAllMocks();
     });
 
-    it('should create a cast member', async () => {
-        let output = await useCase.execute({
-            name: 'test',
-            type: CastMemberTypes.ACTOR,
-        });
-        let entity = await repository.findById(new CastMemberId(output.id));
-        expect(output).toStrictEqual({
-            id: entity!.cast_member_id.id,
-            name: 'test',
-            type: CastMemberTypes.ACTOR,
-            created_at: entity!.created_at,
+    describe('execute method', () => {
+        it('should throw an generic error', async () => {
+            const expectedError = new Error('generic error');
+            jest.spyOn(repository, 'insert').mockRejectedValue(expectedError);
+            await expect(
+                useCase.execute({
+                    name: 'test',
+                    type: CastMemberTypes.ACTOR,
+                }),
+            ).rejects.toThrowError(expectedError);
         });
 
-        output = await useCase.execute({
-            name: 'test',
-            type: CastMemberTypes.DIRECTOR,
+        it('should throw an entity validation error', async () => {
+            try {
+                await useCase.execute(
+                    new CreateCastMemberInput({
+                        name: 'cast',
+                        type: 'a' as any,
+                    }),
+                );
+            } catch (e) {
+                expect(e).toBeInstanceOf(EntityValidationError);
+                expect(e.error).toStrictEqual([
+                    {
+                        type: ['Invalid cast member type: a'],
+                    },
+                ]);
+            }
+            expect.assertions(2);
         });
-        entity = await repository.findById(new CastMemberId(output.id));
-        expect(output).toStrictEqual({
-            id: entity!.cast_member_id.id,
-            name: 'test',
-            type: CastMemberTypes.DIRECTOR,
-            created_at: entity!.created_at,
+
+        it('should create a cast member', async () => {
+            const spyInsert = jest.spyOn(repository, 'insert');
+            let output = await useCase.execute({
+                name: 'test',
+                type: CastMemberTypes.ACTOR,
+            });
+            expect(spyInsert).toHaveBeenCalledTimes(1);
+            expect(output).toStrictEqual({
+                id: repository.items[0].cast_member_id.id,
+                name: 'test',
+                type: CastMemberTypes.ACTOR,
+                created_at: repository.items[0].created_at,
+            });
+
+            output = await useCase.execute({
+                name: 'test',
+                type: CastMemberTypes.DIRECTOR,
+            });
+            expect(spyInsert).toHaveBeenCalledTimes(2);
+            expect(output).toStrictEqual({
+                id: repository.items[1].cast_member_id.id,
+                name: 'test',
+                type: CastMemberTypes.DIRECTOR,
+                created_at: repository.items[1].created_at,
+            });
         });
     });
 });

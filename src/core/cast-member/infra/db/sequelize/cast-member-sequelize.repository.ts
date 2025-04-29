@@ -52,7 +52,7 @@ export class CastMemberSequelizeRepository implements ICastMemberRepository {
     }
 
     async bulkInsert(entities: CastMember[]): Promise<void> {
-        await this.castMemberModel.bulkCreate(entities.map((e) => e.toJSON()));
+        await this.castMemberModel.bulkCreate(entities.map((entity) => CastMemberModelMapper.toModel(entity).toJSON()));
     }
 
     async findById(id: CastMemberId): Promise<CastMember | null> {
@@ -204,5 +204,14 @@ export class CastMemberModelMapper {
         }
 
         return castMember;
+    }
+
+    static toModel(entity: CastMember): CastMemberModel {
+        return CastMemberModel.build({
+            cast_member_id: entity.cast_member_id.id,
+            name: entity.name,
+            type: entity.type.type,
+            created_at: entity.created_at,
+        });
     }
 }
