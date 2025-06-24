@@ -105,4 +105,12 @@ export class CategorySequelizeRepository implements ICategoryRepository {
     private async _get(category_id: string) {
         return this.categoryModel.findByPk(category_id);
     }
+
+    existsById(ids: CategoryId[]): Promise<{ exists: CategoryId[]; not_exists: CategoryId[] }> {
+        return Promise.resolve({exists: [], not_exists: []});
+    }
+
+    findByIds(ids: CategoryId[]): Promise<Category[]> {
+        return Promise.resolve([]);
+    }
 }
